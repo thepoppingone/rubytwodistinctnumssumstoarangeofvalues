@@ -1,0 +1,10 @@
+An input file contains integers, both positive and negative (there might be some
+duplicates). Each line on the file has one integer.
+
+Compute the number of y values within the range -10000 ≤ y ≤ 10000 such that
+there are distinct numbers a, b where a + b = y.
+
+Answers to test cases:
+
+1. test1.txt = 12
+2. test2.txt = 488
