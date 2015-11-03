@@ -1,6 +1,7 @@
   # This file uses the O(nlogn) time complexity of finding the number of 
   # distinct values of y 
 
+  # Check for Time taken
   #beginning_time = Time.now
 
   # Read command line argument for the file name input and save it 
