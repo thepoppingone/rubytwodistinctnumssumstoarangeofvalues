@@ -1,61 +1,76 @@
+  # This file uses the O(nlogn) time complexity of finding the number of 
+  # distinct values of y 
+
   beginning_time = Time.now
 
+  # Read command line argument for the file name input and save it 
+  filename = ARGV[0]
+
+  # Import the ruby `set` for removing duplicate values
   require 'set'
-  iSet = Set.new()
-  IO.foreach("cases/medium.txt") do |x|
-    iSet.add x.to_i
+
+  # Declare a new set and add all the numbers read from the file to form a 
+  # list of unique numbers
+  numbers_set = Set.new()
+  IO.foreach(filename) do |x|
+    numbers_set.add x.to_i
   end
 
-  $hashSet = Hash.new()
+  # Declare and initialize a hash with all values of y as the `keys`
+  $hash_of_y = Hash.new()
   for i in -10000..10000
-    $hashSet[i] = Hash.new()
+    $hash_of_y[i] = true;
   end
 
-  sortedList = iSet.sort
+  $counter = 0
+  # Sort the Set and it transforms into a sorted array
+  sorted_array = numbers_set.sort
 
-  i,j = 1, sortedList.size-1
-  $counter = 0;
+  # Define the function that is to be run for each checking of the possible y
+  # where `first` being the `a` of the equation
+  # where `sorted_array[i]` and `sorted_array[j]` being the possible values of `b` of the equation
+  def find_sum(first, sorted_array, i)
+    
+    # Declare and initialize the j before the while loop as the final index of the sorted_array
+    j = sorted_array.size-1
+    
+    # A while loop to check from both the start of the array and from the end of the array
+    while i<=j
 
-def find_sum(first, sortedList, i, j)
+      # Increments the index i until the lower limit of the range required is found
+      if first+sorted_array[i] < -10000
+        i+= 1
+      # Decrements the index j until the upper limit of the range required is found  
+      elsif first+sorted_array[j] > 10000
+        j-= 1
+      else
 
-  while i<=j
-   if first+sortedList[i] < -10000
-    i+= 1
-   elsif first+sortedList[j] > 10000
-    j-= 1
-   else
+        if $hash_of_y.key?(first+sorted_array[i])
+          #this outputs the unique one found
+          p first+sorted_array[i]
+          $hash_of_y.delete first+sorted_array[i]
+          $counter += 1
+        end
 
-    if !$hashSet[first+sortedList[i]].nil?
-      #this outputs the unique one found
-      #p first+sortedList[i]
-      $hashSet.delete first+sortedList[i]
-      $counter += 1
+        if $hash_of_y.key?(first+sorted_array[j])
+          #this outputs the unique one found
+          p first+sorted_array[j]
+          $hash_of_y.delete first+sorted_array[j] 
+          $counter += 1
+        end
+
+        i+=1
+        j-=1
+
+      end
+
     end
 
-    if !$hashSet[first+sortedList[j]].nil?
-      #this outputs the unique one found
-      #p first+sortedList[j]
-      $hashSet.delete first+sortedList[j] 
-      $counter += 1
-    end
+  end
 
-    i+=1
-    j-=1
-    #end of else
-   end
-
- end
-
-end
-
-for f in sortedList do
-  # This starts the next index
-  p "the next f is #{f}"
-  #next if f < -5000
+sorted_array.each_with_index do |f, i|
   break if f >= 5000
-  find_sum(f,sortedList,i,j)
-  i+= 1
-  #p "next"
+  find_sum(f,sorted_array,i)
 end
 
 p $counter
