@@ -39,9 +39,16 @@
     
     # A while loop to check from both the start of the array and from the end of the array
     while i<=j
-
+      # Binary search condition to reduce the iteration time
+      if first+sorted_array[(i+j)/2] < -10000 and j-1!=i and j != i
+        i = (i+j)/2
+      # Handles both indexes i and j such that there wont be an infinite loop when   
+      elsif first+sorted_array[(i+j)/2] > 10000 and j-1!=i and j != i
+        j = (i+j)/2
+      # The above binary search algorithm has reduced most of the work that needed to be done
+      # Hence a plain iterative algor now will find the rest of the distinct y values needed  
       # Increments the index i until the lower limit of the range required is found
-      if first+sorted_array[i] < -10000
+      elsif first+sorted_array[i] < -10000
         i+= 1
       # Decrements the index j until the upper limit of the range required is found  
       elsif first+sorted_array[j] > 10000
@@ -69,6 +76,7 @@
 sorted_array.each_with_index do |a, i|
   # For all values after 5000 it does not need to be checked
   # as it is sorted, all values after 5000 will fail the condition immediately
+  #p "a is #{a}"
   break if a >= 5000
   # Run the search method taking note that the search must always start from
   # the next position after the first element
